@@ -7,7 +7,6 @@ import Footer from './components/Footer.vue';
 
 <template>
   <Header></Header>
-  <h1>App</h1>
     <div class="wrapper">
       <nav>
         <RouterLink to="/" class="link">Home</RouterLink>
