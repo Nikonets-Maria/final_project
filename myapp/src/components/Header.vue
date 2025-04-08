@@ -91,6 +91,7 @@ export default {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  margin: 15px;
 }
 
 .fav_logo {
