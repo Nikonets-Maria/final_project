@@ -14,7 +14,7 @@
         <button>Shop Now</button>
       </div>
 
-      <img src="" alt="" class="cover_шьп"/>
+      <img src="" alt="" class="cover_img"/>
     </div>
    
     <div class=""> 
