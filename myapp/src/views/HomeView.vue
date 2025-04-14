@@ -1,6 +1,4 @@
-<script setup>
 
-</script>
 
 <template>
 
@@ -8,40 +6,40 @@
 
     <div class="cover">
       <div class="cover_info">
-        <p></p>
-        <h1></h1>
-        <p></p>
-        <button>Shop Now</button>
+        <p>Pro.Beyond.</p>
+        <h1>IPhone 14 Pro</h1>
+        <p>Created to change everything for the better. For everyone</p>
+        <button class="shop_now_btn">Shop Now</button>
       </div>
 
-      <img src="" alt="" class="cover_img"/>
+      <img :src="iphoneImg" alt="iphone image" class="cover_img"/>
     </div>
    
     <div class=""> 
       <!-- грид сетка? -->
-       <div>
-        <img />
-        <h2></h2>
-        <p></p>
+       <div class="">
+        <img :src="playStationImg" class=""/>
+        <h2>Playstation 5</h2>
+        <p>Incredibly powerful CPUs, GPUs, and an SSD with integrated I/O will redefine your PlayStation experience.</p>
        </div>
 
        <div>
-        <img />
-        <h2></h2>
-        <p></p>
+        <img :src="airPodsImg" class=""/>
+        <h2>Apple AirPods Max</h2>
+        <p>Computational audio. Listen, it's powerful</p>
        </div>
 
        <div>
-        <img />
-        <h2></h2>
-        <p></p>
+        <img :src="visionProImg" class=""/>
+        <h2>Apple Vision Pro</h2>
+        <p>An immersive way to experience entertainment</p>
        </div>
 
        <div>
-        <img />
-        <h2></h2>
-        <p></p>
-        <button>Shop Now</button>
+        <img :src="macbookImg" class=""/>
+        <h2>Macbook Air</h2>
+        <p>The new 15‑inch MacBook Air makes room for more of what you love with a spacious Liquid Retina display.</p>
+        <button class="shop_now_btn" >Shop Now</button>
        </div>
       </div>
 
@@ -68,19 +66,19 @@
       <div>
         <div>
           <!-- фильтрация -->
-          <button></button>
-          <button></button>
-          <button></button>
+          <button>New Arrival</button>
+          <button>Bestseller</button>
+          <button>Featured Products</button>
         </div>
 
         <div>
           <!-- цикл для карточек товара -->
-           <ol>
+           <ol v-for="product in productsStore.products" :key="product.id">
             <li>
               <div>
                 <button>fav</button>
                 <img/>
-                <p>text</p>
+                <p>{{ product.name }}</p>
                 <p>cost</p>
                 <button>Buy Now</button>
               </div>
@@ -93,11 +91,12 @@
     </div>
 
     <div class=""> 
+      <!-- цикл из популярных? -->
        <div>
         <img />
         <h2></h2>
         <p></p>
-        <button>Shop Now</button>
+        <button class="shop_now_btn" >Shop Now</button>
       </div>
 
        <div>
@@ -132,7 +131,7 @@
             <img/>
             <p>text</p>
             <p>cost</p>
-            <button>Buy Now</button>
+            <button class="buy_now_btn" >Buy Now</button>
           </div>
         </li>
       </ol>
@@ -141,19 +140,50 @@
 
     <div class="">
       <!-- градиент в css -->
-      <img/>
+      <img :src="laptopImg"/>
+      <img :src="tabletScreenImg"/>
+      <img :src="tabletImg"/>
+
       <div>
-        <h1></h1>
-        <p></p>
-        <button>Shop Now</button>
+        <h1>Big Summer Sale</h1>
+        <p>Commodo fames vitae vitae leo mauris in. Eu consequat.</p>
+        <button class="shop_now_btn" >Shop Now</button>
       </div>
-      <img/>
+      <img :src="phoneImg"/>
+      <img :src="watchImg"/>
+
     </div>
     
 
   </div>
 
 </template>
+
+<script setup>
+import iphoneImg from "../assets/images/Iphone.png"
+import playStationImg from "../assets/images/PlayStation.png"
+import airPodsImg from "../assets/images/Headphones.png"
+import visionProImg from "../assets/images/SomeTech.png"
+import macbookImg from "../assets/images/Screen.png"
+import tabletScreenImg from "../assets/images/TabletScreen.png"
+import phoneImg from "../assets/images/Phone.png"
+import laptopImg from "../assets/images/Laptop.png"
+import tabletImg from "../assets/images/Tablet.png"
+import watchImg from "../assets/images/Watch.png"
+import { onMounted } from 'vue';
+import { useProductsStore } from "@/stores/products"
+
+const productsStore = useProductsStore()
+
+const getProducts = () => {
+    productsStore.getProducts()
+
+}
+
+onMounted(() => {
+  getProducts()
+})
+</script>
 
 <style scoped>
 

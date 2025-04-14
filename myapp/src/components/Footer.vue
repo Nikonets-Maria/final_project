@@ -54,11 +54,12 @@ import instaIco from "../assets/images/Instagram.png"
 
 .footer_content{
   background-color: black;
-  height: 500px;
+  height: 30%;
   color: white;
   width: 100%;
-  position: absolute;
-  bottom: 0;
+
+  /* position: absolute;
+  bottom: 0; */
 
   display: flex;
   flex-direction: column;

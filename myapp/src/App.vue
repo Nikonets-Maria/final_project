@@ -7,6 +7,7 @@ import Footer from './components/Footer.vue';
 
 <template>
   <Header></Header>
+
     <div class="wrapper">
       <nav>
         <RouterLink to="/" class="link">Home</RouterLink>
@@ -15,10 +16,10 @@ import Footer from './components/Footer.vue';
         <RouterLink to="/cart" class="link">cart</RouterLink>
         <RouterLink to="/favorite" class="link">favorite</RouterLink>
         <RouterLink to="/vdfvkz" class="link">not found page</RouterLink>
-
       </nav>
     </div>
-  <RouterView />
+    
+  <RouterView class="main_content"/>
 
   <Footer></Footer>
 
@@ -27,5 +28,8 @@ import Footer from './components/Footer.vue';
 <style scoped> 
 .link{
   margin: 5px;
+}
+.main_content{
+  min-height: 49vh;
 }
 </style>

@@ -55,7 +55,8 @@ export default {
   display: flex;
   align-items: center;
 
-  width: 372px;
+  /* width: 372px; */
+  width: 30%;
   height: 56px;
   border-radius: 8px;
   /* padding: 16px; */
@@ -66,7 +67,8 @@ export default {
 
 .search-input {
   border: none;
-  width: 300px;
+  /* width: 300px; */
+  width: 28%;
   height: 45px;
   background-color: #F5F5F5;
 }
