@@ -20,9 +20,10 @@ export const useProductsStore = defineStore('products', () => {
   }
   async function getCategories() {
     // export type ProuductCategories = 'phone' | 'tablet' | 'headphones' | 'computer' | 'accessories'
-    let url = 'http://localhost:1452/api/products'
+    let url = 'http://localhost:1452/api/category/'
     let res = await fetch(url)
     let data = await res.json()
+    categories.value = data
   }
 
   async function getProductsFromeCategory() {
@@ -67,5 +68,5 @@ export const useProductsStore = defineStore('products', () => {
   }
 
 
-  return { products, getProducts, getDiscountProducts, sale_products}
+  return { products, getProducts, getDiscountProducts, sale_products, getCategories, categories}
 })

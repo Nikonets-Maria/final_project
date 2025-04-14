@@ -52,7 +52,7 @@
         </div>
        <div>
         <!-- цикл для формирования ? если в данных есть изображение категории -->
-        <ol>
+        <ol v-for="item in productsStore.categories" :key="categories.id">
           <li>
             <img/>
             <h5></h5>
@@ -181,12 +181,17 @@ const getProducts = () => {
 }
 
 const getDiscountProducts = () => {
-  productsStore.getDiscountProducts
+  productsStore.getDiscountProducts()
+}
+
+const getCategories = () => {
+  productsStore.getCategories()
 }
 
 onMounted(() => {
   getProducts()
   getDiscountProducts()
+  getCategories()
 })
 
 
