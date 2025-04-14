@@ -25,8 +25,7 @@ export const useProductsStore = defineStore('products', () => {
     let data = await res.json()
     categories.value = data
 
-    console.log(categories.value)
-
+    // console.log(categories.value)
   }
 
   async function getProductsFromeCategory() {

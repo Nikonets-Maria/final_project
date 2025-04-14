@@ -73,7 +73,7 @@
 
         <div>
           <!-- цикл для карточек товара -->
-           <ol v-for="product in productsStore.products.slice(0,5)" :key="product.id">
+           <ol v-for="product in productsStore.products.slice(0,8)" :key="product.id">
             <li>
               <div>
                 <button>fav</button>
@@ -92,34 +92,16 @@
 
     <div class=""> 
       <!-- цикл из популярных? -->
+       <!-- сделать сортировку по рейтингу и вывести первые четыре? 
+        а как без повторов? -> 
+        сделать из каждой категории или просто убрать совподающие неймы?-->
        <div>
         <img />
         <h2></h2>
         <p></p>
         <button class="shop_now_btn" >Shop Now</button>
       </div>
-
-       <div>
-        <img />
-        <h2></h2>
-        <p></p>
-        <button>Shop Now</button>
-      </div>
-
-       <div>
-        <img />
-        <h2></h2>
-        <p></p>
-        <button>Shop Now</button>
-       </div>
-
-       <div>
-        <img />
-        <h2></h2>
-        <p></p>
-        <button>Shop Now</button>
-       </div>
-      </div>
+    </div>
 
     <div class="">
       <h4>Discouts up to -50%</h4>
@@ -138,7 +120,7 @@
 
     </div> 
 
-    <div class="">
+    <div class="sale_banner">
       <!-- градиент в css -->
       <img :src="laptopImg"/>
       <img :src="tabletScreenImg"/>
