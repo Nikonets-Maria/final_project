@@ -73,7 +73,7 @@
 
         <div>
           <!-- цикл для карточек товара -->
-           <ol v-for="product in productsStore.products" :key="product.id">
+           <ol v-for="product in productsStore.products.slice(0,5)" :key="product.id">
             <li>
               <div>
                 <button>fav</button>
@@ -124,13 +124,13 @@
     <div class="">
       <h4>Discouts up to -50%</h4>
 
-      <ol>
+      <ol v-for="sale_product in productsStore.sale_products.slice(0,4)" :key="sale_product.id">
         <li>
           <div>
             <button>fav</button>
             <img/>
-            <p>text</p>
-            <p>cost</p>
+            <p>text {{ sale_product.name }}</p>
+            <p>cost {{ sale_product.discount_price }}</p>
             <button class="buy_now_btn" >Buy Now</button>
           </div>
         </li>
@@ -180,9 +180,16 @@ const getProducts = () => {
 
 }
 
+const getDiscountProducts = () => {
+  productsStore.getDiscountProducts
+}
+
 onMounted(() => {
   getProducts()
+  getDiscountProducts()
 })
+
+
 </script>
 
 <style scoped>
