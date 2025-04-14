@@ -24,6 +24,9 @@ export const useProductsStore = defineStore('products', () => {
     let res = await fetch(url)
     let data = await res.json()
     categories.value = data
+
+    console.log(categories.value)
+
   }
 
   async function getProductsFromeCategory() {
@@ -44,7 +47,7 @@ export const useProductsStore = defineStore('products', () => {
     let data = await res.json()
     sale_products.value = data.filter(item => item.discount_price !== null)
     
-    console.log(sale_products.value)
+    // console.log(sale_products.value)
 }
 
 //   async function getFavoriteProducts() {

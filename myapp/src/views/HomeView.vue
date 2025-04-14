@@ -52,10 +52,10 @@
         </div>
        <div>
         <!-- цикл для формирования ? если в данных есть изображение категории -->
-        <ol v-for="item in productsStore.categories" :key="categories.id">
+        <ol v-for="item in productsStore.categories" :key="item.id">
           <li>
             <img/>
-            <h5></h5>
+            <h5>{{ item.name }}</h5>
           </li>
         </ol>
        </div>
