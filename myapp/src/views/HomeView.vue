@@ -6,41 +6,49 @@
 
     <div class="cover">
       <div class="cover_info">
-        <p>Pro.Beyond.</p>
+        <p class="gray_text">Pro.Beyond.</p>
         <h1>IPhone 14 Pro</h1>
-        <p>Created to change everything for the better. For everyone</p>
+        <p class="gray_text">Created to change everything for the better. For everyone</p>
         <button class="shop_now_btn">Shop Now</button>
       </div>
 
       <img :src="iphoneImg" alt="iphone image" class="cover_img"/>
     </div>
    
-    <div class=""> 
+    <div class="flagman_baner"> 
       <!-- грид сетка? -->
-       <div class="">
+       <div class="banner_item1">
         <img :src="playStationImg" class=""/>
-        <h2>Playstation 5</h2>
-        <p>Incredibly powerful CPUs, GPUs, and an SSD with integrated I/O will redefine your PlayStation experience.</p>
+        <div class="banner_item1_content">
+          <h2>Playstation 5</h2>
+          <p class="gray_text">Incredibly powerful CPUs, GPUs, and an SSD with integrated I/O will redefine your PlayStation experience.</p>
+        </div>
        </div>
 
-       <div>
-        <img :src="airPodsImg" class=""/>
-        <h2>Apple AirPods Max</h2>
-        <p>Computational audio. Listen, it's powerful</p>
+       <div class="banner_item2">
+        <img :src="airPodsImg"/>
+        <div>
+          <h2>Apple AirPods Max</h2>
+          <p class="gray_text">Computational audio. Listen, it's powerful</p>      
+        </div>
        </div>
 
-       <div>
-        <img :src="visionProImg" class=""/>
-        <h2>Apple Vision Pro</h2>
-        <p>An immersive way to experience entertainment</p>
-       </div>
+       <div  class="banner_item3">
+        <img :src="visionProImg"/>
+        <div>
+          <h2>Apple Vision Pro</h2>
+          <p class="gray_text">An immersive way to experience entertainment</p>       
+        </div>
+        </div>
 
-       <div>
-        <img :src="macbookImg" class=""/>
-        <h2>Macbook Air</h2>
-        <p>The new 15‑inch MacBook Air makes room for more of what you love with a spacious Liquid Retina display.</p>
-        <button class="shop_now_btn" >Shop Now</button>
-       </div>
+       <div class="banner_item4">
+        <div class="banner_item4_content">
+          <h2>Macbook Air</h2>
+          <p class="gray_text">The new 15‑inch MacBook Air makes room for more of what you love with a spacious Liquid Retina display.</p>
+          <button class="shop_now_btn" >Shop Now</button>         
+        </div>
+        <img :src="macbookImg"/>
+      </div>
       </div>
 
     <div class="category_menu">
@@ -98,7 +106,7 @@
        <div>
         <img />
         <h2></h2>
-        <p></p>
+        <p class="gray_text"></p>
         <button class="shop_now_btn" >Shop Now</button>
       </div>
     </div>
@@ -121,18 +129,22 @@
     </div> 
 
     <div class="sale_banner">
-      <!-- градиент в css -->
-      <img :src="laptopImg"/>
-      <img :src="tabletScreenImg"/>
-      <img :src="tabletImg"/>
-
+       <div class="content_sale_banner1">
+        <div class="img_content">
+          <img :src="tabletScreenImg" class="sale_img_viol"/>
+          <img :src="laptopImg" class="sale_img_yellow"/>
+        </div>
+        <img :src="tabletImg" class="sale_img_blue"/>
+       </div>
       <div>
         <h1>Big Summer Sale</h1>
-        <p>Commodo fames vitae vitae leo mauris in. Eu consequat.</p>
+        <p class="gray_text">Commodo fames vitae vitae leo mauris in. Eu consequat.</p>
         <button class="shop_now_btn" >Shop Now</button>
       </div>
-      <img :src="phoneImg"/>
-      <img :src="watchImg"/>
+      <div class="content_sale_banner2">
+        <img :src="watchImg"/>
+        <img :src="phoneImg" class="sale_phone_img"/>
+      </div>
 
     </div>
     
@@ -180,5 +192,118 @@ onMounted(() => {
 </script>
 
 <style scoped>
+  
+  .cover{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    background-color: #211C24;
+    color: #FFFFFF;
+
+    p{
+      margin: 5px;
+    }
+
+    h1{
+      font-size: 96px;
+    }
+  }
+
+  .shop_now_btn{
+    width: 188px;
+    height: 56px;
+    border: 1px solid #FFFFFF;
+    border-radius: 6px;
+    background-color: #211C24;
+    color: #FFFFFF;
+    margin: 5px;
+
+  }
+
+  .flagman_baner{
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    grid-template-rows: 1.5fr 1fr;
+
+   grid-template-areas:
+    "item1 item1 item4"
+    "item2 item3 item4"
+  }
+
+  .banner_item1{
+    grid-area: item1;
+
+    color: #000000;
+    display: flex;
+    /* align-items: center; */
+  }
+  .banner_item1_content{
+    margin-top: 12%;
+    width: 30%;
+  }
+  .banner_item2{
+    grid-area: item2;
+
+    background-color: #EDEDED;
+    color: #000000;
+    display: flex;
+    align-items: center;
+
+  }
+  .banner_item3{
+    grid-area: item3; 
+    
+    background-color: #353535;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+  }
+  .banner_item4{
+    grid-area: item4;
+
+    background-color: #EDEDED;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+  }
+  .banner_item4_content{
+    width: 40%;
+    margin-right: 20%;
+  }
+
+  /* доделаем */
+  .sale_banner{
+    display: flex;
+    justify-content: space-between;
+    background: linear-gradient(#2E2E2E, #000000);
+    color: #FFFFFF;
+  }
+  .content_sale_banner1{
+    display: flex;
+    flex-direction: column;
+  }
+  .sale_img_yellow{
+    margin-bottom: 15%;
+  }
+  .sale_phone_img{
+    width: 35%;
+  }
+  .sale_img_blue{
+    width: 70%;
+  }
+  .img_content{
+    margin-left: 30px;
+  }
+
+
+
+  
+
+  .gray_text{
+    color: #909090;
+    font-size: 18px;
+  }
 
 </style>
