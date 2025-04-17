@@ -53,15 +53,17 @@
 
     <div class="category_menu">
       <div>
-        <div>
+        <div class="category_swap">
           <h4>Browse by category</h4>
-          <button><</button>
-          <button>></button>
+          <div>
+            <button class="category_swap_btn"><</button>
+            <button class="category_swap_btn">></button>
+          </div>
         </div>
-       <div>
+       <div class="category_list">
         <!-- цикл для формирования ? если в данных есть изображение категории -->
         <ol v-for="item in productsStore.categories" :key="item.id">
-          <li>
+          <li class="category_item">
             <img/>
             <h5>{{ item.name }}</h5>
           </li>
@@ -70,33 +72,32 @@
       </div>
     </div>
     
-    <div class="">
-      <div>
-        <div>
-          <!-- фильтрация -->
-          <button>New Arrival</button>
-          <button>Bestseller</button>
-          <button>Featured Products</button>
-        </div>
+      <div class="product_list_content_block">
+        <nav class="product_filter">
+          <!-- фильтрация? -->
+          <link>New Arrival</link>
+          <link>Bestseller</link>
+          <link>Featured Products</link>
+        </nav>
 
-        <div>
+        <div class="product_list">
           <!-- цикл для карточек товара -->
-           <ol v-for="product in productsStore.products.slice(0,8)" :key="product.id">
-            <li>
-              <div>
-                <button>fav</button>
-                <img/>
+           <ol v-for="product in productsStore.products.slice(0,8)" :key="product.id" class="product_list_content">
+            <li class="product_item">
+                <div>
+                  <img>
+                  <button>fav</button>
+                </div>
+                <img :src="`http://localhost:1452/`+product.images[0]" class="product_img"/>
                 <p>{{ product.name }}</p>
-                <p>cost</p>
-                <button>Buy Now</button>
-              </div>
+                <p>${{ product.price }}</p>
+                <button class="buy_now_btn">Buy Now</button>
             </li>
            </ol>
         </div>
       </div>
 
 
-    </div>
 
     <div class=""> 
       <!-- цикл из популярных? -->
@@ -192,6 +193,11 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
+.gray_text{
+    color: #909090;
+    font-size: 18px;
+  }
   
   .cover{
     display: flex;
@@ -298,12 +304,111 @@ onMounted(() => {
   }
 
 
+  .category_menu{
+    background-color: #FAFAFA;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .category_swap{
+    background-color: #FAFAFA;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .category_swap_btn{
+    background-color: #FAFAFA;
+    border: none;
+    font-size: 32px;
+    margin: 5px;
+  }
+
+  .category_list{
+    background-color: #FAFAFA;
+
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .category_item{
+    display: flex;
+    margin: 10px;
+    list-style-type: none;
+    justify-content: center;
+    align-items: center;
+
+    width: 160px;
+    height: 128px;
+    border: none;
+    border-radius: 15px;
+    background-color: #EDEDED;
+  }
+
+
+
+
+  .product_img{
+    width: 260px;
+  }
+  .buy_now_btn{
+    width: 186px;
+    height: 48px;
+    border: none;
+    border-radius: 8px;
+    background-color: #000000;
+    color: #FFFFFF;
+    margin: 5px;
+
+  }
+
+  .product_list_content_block{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .product_filter{
+    display: flex;
+    align-items: center; 
+    margin: 5px;
+    margin-right: 30%; 
+  }
+
+  .product_list{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 920px;
+
+    justify-content: center;
+    align-items: center;
+  }
+
+  .product_list_content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .product_item{
+    /* height: 456px; */
+    margin: 10px;
+    list-style-type: none;
+    background-color: #F6F6F6;
+    border: none;
+    border-radius: 9px;
+  }
+
+
+
+
 
   
 
-  .gray_text{
-    color: #909090;
-    font-size: 18px;
-  }
+
 
 </style>
