@@ -19,7 +19,10 @@ const router = createRouter({
     },
     {
       path: '/product/:id?',
-      component: ProductDetailsPageView
+      component: ProductDetailsPageView,
+      props: (route) => ({
+        id: route.params.id
+      })
     },
     {
       path: '/cart',

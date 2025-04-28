@@ -1,6 +1,4 @@
-<script setup>
 
-</script>
 
 <template>
   <div>
@@ -12,8 +10,8 @@
       </div>
       <div>
         <img/>
-        <h1></h1>
-        <h2>$</h2>
+        <h1> {{ productsStore.product_info.name }}</h1>
+        <h2> {{ productsStore.product_info.price}}$</h2>
         <h3></h3> 
         <!-- если скидка есть передаем через слот? -->
          <ol>
@@ -78,6 +76,22 @@
 
 
 </template>
+
+<script setup>
+import { useProductsStore } from '@/stores/products'
+import { onMounted } from 'vue'
+
+  const productsStore = useProductsStore()
+
+
+  // const getProductById = () => {
+  //   productsStore.getProductById()
+  // }
+
+  onMounted(() => {
+  })
+
+</script>
 
 <style scoped>
 

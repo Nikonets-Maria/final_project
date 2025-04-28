@@ -7,6 +7,7 @@ export const useProductsStore = defineStore('products', () => {
   const cart = ref([])
   const favorite = ref([])
   const sale_products = ref([])
+  const product_info = ref([])
 
 
   async function getProducts() {
@@ -34,10 +35,11 @@ export const useProductsStore = defineStore('products', () => {
     let data = await res.json()
   }
 
-  async function getProductById() {
-    let url = 'http://localhost:1452/api/products/{id}'
+  async function getProductById(id) {
+    let url = 'http://localhost:1452/api/products/'+id
     let res = await fetch(url)
-    let data = await res.json()
+    product_info.value = await res.json()
+    console.log(product_info.value)
   }
 
   async function getDiscountProducts() {
@@ -70,5 +72,5 @@ export const useProductsStore = defineStore('products', () => {
   }
 
 
-  return { products, getProducts, getDiscountProducts, sale_products, getCategories, categories}
+  return { products, getProducts, getDiscountProducts, sale_products, getCategories, categories, getProductById, product_info}
 })
