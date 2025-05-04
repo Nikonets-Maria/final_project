@@ -4,8 +4,6 @@ import { defineStore } from 'pinia'
 export const useProductsStore = defineStore('products', () => {
   const products = ref([])
   const categories = ref([])
-  const cart = ref([])
-  const favorite = ref([])
   const sale_products = ref([])
   const product_info = ref([])
 
@@ -39,7 +37,7 @@ export const useProductsStore = defineStore('products', () => {
     let url = 'http://localhost:1452/api/products/'+id
     let res = await fetch(url)
     product_info.value = await res.json()
-    console.log(product_info.value)
+    // console.log(product_info.value)
   }
 
   async function getDiscountProducts() {

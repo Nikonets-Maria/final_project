@@ -9,7 +9,7 @@
 
       </div>
       <div>
-        <img :src="`http://localhost:1452/`+ productsStore.product_info.images[0]" class="product_img" />
+        <img :src="`http://localhost:1452/`+ productsStore.product_info.images" class="product_img" />
         <h1> {{ productsStore.product_info.name }}</h1>
         <h2> {{ productsStore.product_info.price}}$</h2>
         <h3></h3> 
