@@ -34,18 +34,23 @@
     <div class="product_list">
       <ol v-for="product in productsStore.products.slice(0,15)" :key="product.id" class="product_list_content">
         <!-- <ol v-for="product in productsStore.products.slice(0,8)" :key="product.id" class="product_list_content"> -->
-          <RouterLink to="/product/:{{ product.id }}" class="link"> 
             <li class="product_item" @click="getProductById(product.id)">
                 <div>
                   <img>
-                  <button>fav</button>
+                  <button @click="toggleFavorite(product.id)">
+                    <span v-if="isFavorite(product.id)">❤️</span>
+                    <span v-else>🤍</span>
+                  </button>
                 </div>
+                <RouterLink to="/product/:{{ product.id }}" class="link"> 
+
                 <img :src="`http://localhost:1452/`+product.images[0]" class="product_img"/>
                 <p>{{ product.name }}</p>
                 <p>${{ product.price }}</p>
+                </RouterLink>
+
                 <button class="buy_now_btn">Buy Now</button>
             </li>
-          </RouterLink>
           <!-- <router-view :id="product.id"></router-view> -->
           </ol>
         </div>
@@ -73,11 +78,33 @@
 </template>
 
 <script setup>
+import { useFavProductsStore } from '@/stores/favorite'
 import { useProductsStore } from '@/stores/products'
 import { onMounted } from 'vue'
 
 
   const productsStore = useProductsStore()
+  const favStore = useFavProductsStore()
+
+  const addToFav = () => {
+    favStore.addToFav()
+  }
+
+    const deleteFromFav = () => {
+    favStore.deleteFromFav()
+  }
+
+  const isFavorite = () => {
+    favStore.isFavorite()
+  }
+
+  const toggleFavorite = (productId) => {
+      if (favStore.isFavorite(productId).value) {
+        favStore.deleteFromFav(productId)
+      } else {
+        favStore.addToFav(productId)
+      }
+    }
 
   const getProducts = () => {
     productsStore.getProducts()
