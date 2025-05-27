@@ -35,6 +35,31 @@ export const useProductsStore = defineStore('products', () => {
   const sale_products = ref([])
   const product_info = ref([])
 
+      const selectedFilters = ref({
+        brand: null,
+        batteryCapacity: null,
+        screenType: null,
+        screenDiagonal: null,
+        protectionClass: null,
+        builtInMemory: null,
+    });
+
+    const searchTerm = ref('');
+
+    const filteredProducts = computed(() => {
+        return products.value.filter(product => {
+            return (!selectedFilters.value.brand || product.brand === selectedFilters.value.brand) &&
+                (!selectedFilters.value.batteryCapacity || product.characteristic[2] === selectedFilters.value.batteryCapacity) &&
+                (!selectedFilters.value.screenType || product.characteristic[7] === selectedFilters.value.screenType) &&
+                (!selectedFilters.value.screenDiagonal || product.characteristic[6] === selectedFilters.value.screenDiagonal) &&
+                (!selectedFilters.value.protectionClass || product.characteristic[4] === selectedFilters.value.protectionClass) &&
+                (!selectedFilters.value.builtInMemory || product.characteristic[1] === selectedFilters.value.builtInMemory) &&
+                (product.name.toLowerCase().includes(searchTerm.value.toLowerCase()));
+        });
+    });
+
+    
+
 
   async function getProducts() {
     let url = 'http://localhost:1452/api/products'
@@ -78,5 +103,5 @@ export const useProductsStore = defineStore('products', () => {
   }
 
 
-  return { products, getProducts, getDiscountProducts, sale_products, getCategories, categories, getProductById, product_info}
+    return { products, selectedFilters, filteredProducts, getProducts, getDiscountProducts, getCategories, categories, getProductById, product_info };
 })
