@@ -8,12 +8,15 @@ export const useFavProductsStore = defineStore('fav_products', () => {
         if (!favorite.value.has(productId)) {
             favorite.value.add(productId)
         }
+        console.log('fav added')
     }
 
     function deleteFromFav(productId) {
         if (favorite.value.has(productId)) {
             favorite.value.delete(productId)
         }
+      console.log('fav deleted')
+
     }
 
     const isFavorite = (productId) => computed(() => favorite.value.has(productId))
