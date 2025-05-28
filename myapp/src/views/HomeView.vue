@@ -72,27 +72,53 @@
     <!-- Product List Content Block -->
     <div class="product_list_content_block">
       <nav class="product_filter">
-        <!-- Можно добавить логику фильтрации -->
-        <a href="#" class="filter_link" @click.prevent="filterProducts('new')">New Arrival</a>
-        <a href="#" class="filter_link" @click.prevent="filterProducts('bestseller')">Bestseller</a>
-        <a href="#" class="filter_link" @click.prevent="filterProducts('featured')">Featured Products</a>
+        <a href="#" class="filter_link" :class="{ active: activeFilter === 'new' }" @click.prevent="filterProducts('new')">New Arrival</a>
+        <a href="#" class="filter_link" :class="{ active: activeFilter === 'bestseller' }" @click.prevent="filterProducts('bestseller')">Bestseller</a>
+        <a href="#" class="filter_link" :class="{ active: activeFilter === 'featured' }" @click.prevent="filterProducts('featured')">Featured Products</a>
       </nav>
 
       <div class="product_list">
-        <ul class="product_list_content">
-          <li v-for="product in filteredProducts" :key="product.id" class="product_item">
+        <ol class="product_list_content">
+          <li
+            v-for="product in paginatedProducts"
+            :key="product.id"
+            class="product_item"
+            @click="getProductById(product.id)"
+          >
             <div>
-              <img :src="`http://localhost:1452/${product.images[0]}`" :alt="product.name" class="product_img" />
-              <button @click="toggleFavorite(product.id)" aria-label="Toggle favorite">
+              <img
+                :src="`http://localhost:1452/${product.images[0]}`"
+                :alt="product.name"
+                class="product_img"
+              />
+              <button @click.stop="toggleFavorite(product.id)" aria-label="Toggle favorite" class="fav_button">
                 <span v-if="isFavorite(product.id)">❤️</span>
                 <span v-else>🤍</span>
               </button>
             </div>
-            <p>{{ product.name }}</p>
-            <p>${{ product.price }}</p>
-            <button class="buy_now_btn">Buy Now</button>
+
+            <RouterLink :to="`/product/${product.id}`" class="link">
+              <p>{{ product.name }}</p>
+              <p>${{ product.price }}</p>
+            </RouterLink>
+
+            <button class="buy_now_btn" @click.stop="addToCart(product)">Add to Cart</button>
           </li>
-        </ul>
+        </ol>
+      </div>
+
+      <!-- Пагинация -->
+      <div class="pagination">
+        <button :disabled="currentPage === 1" @click="prevPage">‹</button>
+        <button
+          v-for="page in visiblePages"
+          :key="page"
+          :class="{ active: currentPage === page }"
+          @click="goToPage(page)"
+        >
+          {{ page }}
+        </button>
+        <button :disabled="currentPage === totalPages" @click="nextPage">›</button>
       </div>
     </div>
 
@@ -102,15 +128,21 @@
       <ul class="discount_products">
         <li v-for="sale_product in productsStore.sale_products.slice(0, 4)" :key="sale_product.id" class="discount_product_item">
           <div>
-            <button @click="toggleFavorite(sale_product.id)" aria-label="Toggle favorite">
+            <img
+              :src="`http://localhost:1452/${sale_product.images[0]}`"
+              :alt="sale_product.name"
+              class="product_img"
+            />
+            <button @click.stop="toggleFavorite(sale_product.id)" aria-label="Toggle favorite" class="fav_button">
               <span v-if="isFavorite(sale_product.id)">❤️</span>
               <span v-else>🤍</span>
             </button>
-            <img :src="`http://localhost:1452/${sale_product.images[0]}`" :alt="sale_product.name" />
-            <p>{{ sale_product.name }}</p>
-            <p>${{ sale_product.discount_price }}</p>
-            <button class="buy_now_btn">Buy Now</button>
           </div>
+          <RouterLink :to="`/product/${sale_product.id}`" class="link">
+            <p>{{ sale_product.name }}</p>
+            <p>${{ sale_product.price }}</p>
+          </RouterLink>
+          <button class="buy_now_btn" @click.stop="addToCart(sale_product)">Add to Cart</button>
         </li>
       </ul>
     </div>
@@ -142,6 +174,8 @@
 import { onMounted, ref, computed } from 'vue'
 import { useProductsStore } from '@/stores/products'
 import { useFavProductsStore } from '@/stores/favorite'
+import { useCartProductsStore } from '@/stores/cart'
+import { RouterLink } from 'vue-router'
 
 import iphoneImg from '../assets/images/Iphone.png'
 import playStationImg from '../assets/images/PlayStation.png'
@@ -157,6 +191,11 @@ import defaultCategoryImg from '../assets/images/TikTok.png' // Заглушка
 
 const productsStore = useProductsStore()
 const favStore = useFavProductsStore()
+const cartStore = useCartProductsStore()
+
+const activeFilter = ref('featured')
+const currentPage = ref(1)
+const itemsPerPage = 8
 
 onMounted(() => {
   productsStore.getProducts()
@@ -165,21 +204,61 @@ onMounted(() => {
 })
 
 // Фильтрация товаров по типу
-const activeFilter = ref('featured')
 const filteredProducts = computed(() => {
+  let filtered = []
   switch (activeFilter.value) {
     case 'new':
-      return productsStore.products.filter(p => p.isNew).slice(0, 8)
+      filtered = productsStore.products.filter(p => p.isNew)
+      break
     case 'bestseller':
-      return productsStore.products.filter(p => p.isBestSeller).slice(0, 8)
+      filtered = productsStore.products.filter(p => p.isBestSeller)
+      break
     case 'featured':
     default:
-      return productsStore.products.slice(0, 8)
+      filtered = productsStore.products
   }
+  return filtered
+})
+
+// Пагинация
+const totalPages = computed(() => Math.ceil(filteredProducts.value.length / itemsPerPage))
+
+const paginatedProducts = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  return filteredProducts.value.slice(start, start + itemsPerPage)
+})
+
+const prevPage = () => {
+  if (currentPage.value > 1) currentPage.value--
+}
+
+const nextPage = () => {
+  if (currentPage.value < totalPages.value) currentPage.value++
+}
+
+const goToPage = (page) => {
+  currentPage.value = page
+}
+
+const visiblePages = computed(() => {
+  const total = totalPages.value
+  let start = Math.max(currentPage.value - 2, 1)
+  let end = Math.min(start + 4, total)
+
+  if (end - start < 4) {
+    start = Math.max(end - 4, 1)
+  }
+
+  const pages = []
+  for (let i = start; i <= end; i++) {
+    pages.push(i)
+  }
+  return pages
 })
 
 const filterProducts = (filterName) => {
   activeFilter.value = filterName
+  currentPage.value = 1 // Сбросить на первую страницу при смене фильтра
 }
 
 const isFavorite = (productId) => favStore.favorite.includes(productId)
@@ -192,7 +271,16 @@ const toggleFavorite = (productId) => {
   }
 }
 
-// Заглушки для переключения категорий (можно реализовать логику)
+const getProductById = (id) => {
+  productsStore.getProductById(id)
+}
+
+// Метод добавления товара в корзину
+const addToCart = (product) => {
+  cartStore.addToCart(product)
+}
+
+// Заглушки для переключения категорий (реализуйте по необходимости)
 const prevCategory = () => {
   // TODO: Реализовать переключение категорий
 }
@@ -202,6 +290,7 @@ const nextCategory = () => {
 </script>
 
 <style scoped>
+/* Ваши стили без изменений */
 .gray_text {
   color: #909090;
   font-size: 18px;
@@ -398,7 +487,8 @@ const nextCategory = () => {
   font-weight: 600;
 }
 
-.filter_link:hover {
+.filter_link:hover,
+.filter_link.active {
   text-decoration: underline;
 }
 
@@ -426,6 +516,7 @@ const nextCategory = () => {
   width: 260px;
   text-align: center;
   position: relative;
+  cursor: pointer;
 }
 
 .product_img {
@@ -496,5 +587,30 @@ const nextCategory = () => {
   border: none;
   font-size: 20px;
   cursor: pointer;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  border: none;
+  background: #eee;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination button.active {
+  background: #000;
+  color: #fff;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 </style>

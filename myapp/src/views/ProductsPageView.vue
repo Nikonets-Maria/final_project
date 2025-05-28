@@ -1,35 +1,17 @@
 <template>
   <div class="products_page_content">
-
     <!-- Фильтр -->
     <div>
-      <div class="filtr_menu">
-        <h4>Brand</h4>
-        <button @click="toggleFilterOptions">{{ showFilters ? '˄' : '˅' }}</button>
-        <hr>
-        <div v-if="showFilters" class="filter_options">
-          <input type="text" placeholder="Search" v-model="searchQuery" />
-          <ul>
-            <li v-for="filter in filterOptions" :key="filter.id">
-              <label>
-                <input type="checkbox" v-model="selectedFilters" :value="filter.value" />
-                {{ filter.label }}
-              </label>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Другие фильтры (Battery capacity, Screen type, и т.д.) -->
       <div class="filtr_menu" v-for="filter in filterOptions" :key="filter.id">
         <h4>{{ filter.label }}</h4>
-        <button @click="toggleFilterOptions">{{ showFilters ? '˄' : '˅' }}</button>
-        <div v-if="showFilters" class="filter_options">
-          <input type="text" placeholder="Search" v-model="searchQuery" />
+        <button @click="toggleFilterOptions(filter.id)">{{ showFilters[filter.id] ? '˄' : '˅' }}</button>
+        <hr>
+        <div v-if="showFilters[filter.id]" class="filter_options">
+          <input type="text" placeholder="Search" v-model="searchQuery[filter.id]" />
           <ul>
             <li v-for="option in filter.options" :key="option.id">
               <label>
-                <input type="checkbox" v-model="selectedFilters" :value="option.value" />
+                <input type="checkbox" v-model="selectedFilters[filter.label]" :value="option.value" />
                 {{ option.label }}
               </label>
             </li>
@@ -107,59 +89,65 @@
 import { ref, computed, onMounted } from 'vue'
 import { useProductsStore } from '@/stores/products'
 import { useFavProductsStore } from '@/stores/favorite'
-import { useCartProductsStore } from '@/stores/cart' // Импортируем store корзины
+import { useCartProductsStore } from '@/stores/cart'
 import { RouterLink } from 'vue-router'
 
 const productsStore = useProductsStore()
 const favStore = useFavProductsStore()
-const cartStore = useCartProductsStore() // Инициализируем store корзины
+const cartStore = useCartProductsStore()
 
 // Данные для фильтров
 const filterOptions = ref([
   { id: 1, label: 'Brand', options: [{ id: 1, label: 'Brand A', value: 'brandA' }, { id: 2, label: 'Brand B', value: 'brandB' }] },
   { id: 2, label: 'Battery capacity', options: [{ id: 1, label: '2000mAh', value: '2000' }, { id: 2, label: '3000mAh', value: '3000' }] },
-  // Добавьте другие фильтры по аналогии
 ]);
 
-const selectedFilters = ref([])
-const searchQuery = ref('')
+const selectedFilters = ref({
+  Brand: [],
+  'Battery capacity': [],
+});
+const searchQuery = ref({});
 const sortOrder = ref('asc')
-const showFilters = ref(true)
+const showFilters = ref({});
+
+// Инициализация видимости фильтров
+filterOptions.value.forEach(filter => {
+  showFilters.value[filter.label] = false;
+});
 
 // Пагинация
 const currentPage = ref(1)
 const itemsPerPage = 15
 
-const toggleFilterOptions = () => {
-  showFilters.value = !showFilters.value
+const toggleFilterOptions = (filterId) => {
+  showFilters.value[filterId] = !showFilters.value[filterId]
 }
 
 // Фильтрация и сортировка
 const filteredProducts = computed(() => {
   let filtered = productsStore.products
 
-  // Фильтр по выбранным категориям (если есть)
-  if (selectedFilters.value.length) {
-    filtered = filtered.filter(p =>
-      selectedFilters.value.some(f => p.category === f)
-    )
-  }
+  // Фильтр по выбранным категориям
+  Object.keys(selectedFilters.value).forEach(filterKey => {
+    if (selectedFilters.value[filterKey].length) {
+      filtered = filtered.filter(product => selectedFilters.value[filterKey].includes(product[filterKey]));
+    }
+  });
 
   // Поиск по названию
-  if (searchQuery.value.trim()) {
-    filtered = filtered.filter(p =>
-      p.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-    )
-  }
+  Object.keys(searchQuery.value).forEach(filterKey => {
+    if (searchQuery.value[filterKey]) {
+      filtered = filtered.filter(product => product.name.toLowerCase().includes(searchQuery.value[filterKey].toLowerCase()));
+    }
+  });
 
   // Сортировка по цене
   filtered = filtered.slice().sort((a, b) => {
-    if (sortOrder.value === 'asc') return a.price - b.price
-    else return b.price - a.price
-  })
+    return sortOrder.value === 'asc' ? a.price - b.price : b.price - a.price;
+  });
 
   return filtered
-})
+});
 
 // Пагинация
 const totalPages = computed(() =>
@@ -193,11 +181,7 @@ const visiblePages = computed(() => {
     start = Math.max(end - 4, 1)
   }
 
-  const pages = []
-  for (let i = start; i <= end; i++) {
-    pages.push(i)
-  }
-  return pages
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i)
 })
 
 // Избранное
@@ -217,7 +201,7 @@ const getProductById = (id) => {
 
 // Метод добавления товара в корзину
 const addToCart = (product) => {
-  cartStore.addToCart(product) // Вызов метода из store корзины
+  cartStore.addToCart(product)
 }
 
 onMounted(() => {
@@ -226,6 +210,7 @@ onMounted(() => {
   productsStore.getCategories()
 })
 </script>
+
 
 <style scoped>
 .products_page_content {
