@@ -2,22 +2,29 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useFavProductsStore = defineStore('fav_products', () => {
-    const favorite = ref([])
+    const favorite = ref(new Set()) // Используем Set для хранения уникальных ID
 
     function addToFav(productId) {
-        if (!favorite.value.includes(productId)) {
-            favorite.value.push(productId)
+        if (!favorite.value.has(productId)) {
+            favorite.value.add(productId)
         }
     }
 
     function deleteFromFav(productId) {
-        const index = favorite.value.indexOf(productId)
-        if (index !== -1) {
-            favorite.value.splice(index, 1)
+        if (favorite.value.has(productId)) {
+            favorite.value.delete(productId)
         }
     }
 
-    const isFavorite = (productId) => computed(() => favorite.value.includes(productId))
+    const isFavorite = (productId) => computed(() => favorite.value.has(productId))
 
-    return { favorite, addToFav, deleteFromFav, isFavorite }
+    // Массив избранных продуктов для удобства отображения
+    const favoriteArray = computed(() => Array.from(favorite.value))
+
+    return { 
+        favorite: favoriteArray, // Возвращаем массив для удобства
+        addToFav, 
+        deleteFromFav, 
+        isFavorite 
+    }
 })

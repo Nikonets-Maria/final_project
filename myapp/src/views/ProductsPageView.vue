@@ -2,8 +2,26 @@
   <div class="products_page_content">
 
     <!-- Фильтр -->
+    <div>
+      <div class="filtr_menu">
+      <h4>Brand</h4>
+      <button @click="toggleFilterOptions">{{ showFilters ? '˄' : '˅' }}</button>
+      <hr>
+      <div v-if="showFilters" class="filter_options">
+        <input type="text" placeholder="Search" v-model="searchQuery" />
+        <ul>
+          <li v-for="filter in filterOptions" :key="filter.id">
+            <label>
+              <input type="checkbox" v-model="selectedFilters" :value="filter.value" />
+              {{ filter.label }}
+            </label>
+          </li>
+        </ul>
+      </div>
+    </div>
+
     <div class="filtr_menu">
-      <h4>Filter Name</h4>
+      <h4>Battery capacity</h4>
       <button @click="toggleFilterOptions">{{ showFilters ? '˄' : '˅' }}</button>
 
       <div v-if="showFilters" class="filter_options">
@@ -20,6 +38,78 @@
       </div>
     </div>
 
+    <div class="filtr_menu">
+      <h4>Screen type</h4>
+      <button @click="toggleFilterOptions">{{ showFilters ? '˄' : '˅' }}</button>
+
+      <div v-if="showFilters" class="filter_options">
+        <input type="text" placeholder="Search" v-model="searchQuery" />
+
+        <ul>
+          <li v-for="filter in filterOptions" :key="filter.id">
+            <label>
+              <input type="checkbox" v-model="selectedFilters" :value="filter.value" />
+              {{ filter.label }}
+            </label>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="filtr_menu">
+      <h4>Screen diagonal</h4>
+      <button @click="toggleFilterOptions">{{ showFilters ? '˄' : '˅' }}</button>
+
+      <div v-if="showFilters" class="filter_options">
+        <input type="text" placeholder="Search" v-model="searchQuery" />
+
+        <ul>
+          <li v-for="filter in filterOptions" :key="filter.id">
+            <label>
+              <input type="checkbox" v-model="selectedFilters" :value="filter.value" />
+              {{ filter.label }}
+            </label>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="filtr_menu">
+      <h4>Protection class</h4>
+      <button @click="toggleFilterOptions">{{ showFilters ? '˄' : '˅' }}</button>
+
+      <div v-if="showFilters" class="filter_options">
+        <input type="text" placeholder="Search" v-model="searchQuery" />
+
+        <ul>
+          <li v-for="filter in filterOptions" :key="filter.id">
+            <label>
+              <input type="checkbox" v-model="selectedFilters" :value="filter.value" />
+              {{ filter.label }}
+            </label>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="filtr_menu">
+      <h4>Buit-in memory</h4>
+      <button @click="toggleFilterOptions">{{ showFilters ? '˄' : '˅' }}</button>
+
+      <div v-if="showFilters" class="filter_options">
+        <input type="text" placeholder="Search" v-model="searchQuery" />
+
+        <ul>
+          <li v-for="filter in filterOptions" :key="filter.id">
+            <label>
+              <input type="checkbox" v-model="selectedFilters" :value="filter.value" />
+              {{ filter.label }}
+            </label>
+          </li>
+        </ul>
+      </div>
+    </div>
+    </div>
     <!-- Список продуктов -->
     <div class="products_list">
       <div class="products_header">
@@ -32,7 +122,7 @@
             Price Asc
           </label>
           <label>
-            <input type="radio" value="desc" v-model="sortOrder" />
+            <input type="radio" value="desc" v-model="soArtOrder" />
             Price Desc
           </label>
         </div>
