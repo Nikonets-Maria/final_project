@@ -126,7 +126,7 @@
     <div class="discount_section">
       <h4>Discounts up to -50%</h4>
       <ul class="discount_products">
-        <li v-for="sale_product in productsStore.sale_products.slice(0, 4)" :key="sale_product.id" class="discount_product_item">
+        <li v-for="sale_product in productsStore.sale_products.slice(0, 4)" :key="sale_product.id" class="product_item">
           <div>
             <img
               :src="`http://localhost:1452/${sale_product.images[0]}`"
@@ -290,54 +290,61 @@ const nextCategory = () => {
 </script>
 
 <style scoped>
-/* Ваши стили без изменений */
-.gray_text {
-  color: #909090;
-  font-size: 18px;
-}
 
+
+
+/* Cover */
 .cover {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-evenly;
   background-color: #211c24;
-  color: #ffffff;
+  color: #fff;
+  padding: 2rem 1rem;
 }
 
 .cover p {
-  margin: 5px;
+  margin: 0.3rem 0;
+  font-size: 1rem;
 }
 
 .cover h1 {
-  font-size: 96px;
+  font-size: 6rem; /* 96px */
+  margin: 0.5rem 0;
+  line-height: 1.1;
 }
 
 .shop_now_btn {
-  width: 188px;
-  height: 56px;
-  border: 1px solid #ffffff;
-  border-radius: 6px;
+  width: 11.75rem; /* 188px */
+  height: 3.5rem; /* 56px */
+  border: 1px solid #fff;
   background-color: #211c24;
-  color: #ffffff;
-  margin: 5px;
+  margin: 0.3rem 0;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
+.shop_now_btn:hover {
+  background-color: #3a3240;
+}
+
+/* Banner grid */
 .flagman_baner {
   display: grid;
   grid-template-columns: 1fr 1fr 2fr;
   grid-template-rows: 1.5fr 1fr;
   grid-template-areas:
-    'item1 item1 item4'
-    'item2 item3 item4';
-  gap: 10px;
-  margin: 20px 0;
+    "item1 item1 item4"
+    "item2 item3 item4";
+  gap: 0.625rem; /* 10px */
+  margin: 1.25rem 0;
 }
 
 .banner_item1 {
   grid-area: item1;
-  color: #000000;
   display: flex;
+  color: #000;
 }
 
 .banner_item1_content {
@@ -345,29 +352,31 @@ const nextCategory = () => {
   width: 30%;
 }
 
+.banner_item2,
+.banner_item3,
+.banner_item4 {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+}
+
 .banner_item2 {
   grid-area: item2;
   background-color: #ededed;
-  color: #000000;
-  display: flex;
-  align-items: center;
+  color: #000;
 }
 
 .banner_item3 {
   grid-area: item3;
   background-color: #353535;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
+  color: #fff;
 }
 
 .banner_item4 {
   grid-area: item4;
   background-color: #ededed;
-  color: #000000;
-  display: flex;
-  align-items: center;
-  justify-content: end;
+  color: #000;
+  justify-content: flex-end;
 }
 
 .banner_item4_content {
@@ -375,13 +384,16 @@ const nextCategory = () => {
   margin-right: 20%;
 }
 
+/* Sale banner */
 .sale_banner {
   display: flex;
   justify-content: space-between;
-  background: linear-gradient(#2e2e2e, #000000);
-  color: #ffffff;
-  padding: 20px;
-  margin-top: 40px;
+  background: linear-gradient(#2e2e2e, #000);
+  color: #fff;
+  padding: 1.25rem;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .content_sale_banner1 {
@@ -391,42 +403,53 @@ const nextCategory = () => {
 
 .sale_img_yellow {
   margin-bottom: 15%;
+  max-width: 100%;
+  height: auto;
 }
 
 .sale_phone_img {
   width: 35%;
+  max-width: 100%;
+  height: auto;
 }
 
 .sale_img_blue {
   width: 70%;
+  max-width: 100%;
+  height: auto;
 }
 
 .img_content {
-  margin-left: 30px;
+  margin-left: 1.875rem; /* 30px */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
+/* Category menu */
 .category_menu {
   background-color: #fafafa;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px 0;
+  padding: 1.25rem 0;
+  width: 100%;
 }
 
 .category_swap {
-  background-color: #fafafa;
   display: flex;
   justify-content: space-between;
-  width: 320px;
-  margin-bottom: 10px;
+  width: 20rem; /* 320px */
+  margin-bottom: 0.625rem;
+  background-color: #fafafa;
 }
 
 .category_swap_btn {
   background-color: #fafafa;
   border: none;
-  font-size: 32px;
-  margin: 5px;
+  font-size: 2rem;
+  margin: 0.3125rem;
   cursor: pointer;
 }
 
@@ -435,11 +458,12 @@ const nextCategory = () => {
   display: flex;
   justify-content: center;
   width: 100%;
+  overflow-x: auto;
 }
 
 .category_items {
   display: flex;
-  gap: 20px;
+  gap: 1.25rem;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -450,34 +474,39 @@ const nextCategory = () => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 160px;
-  height: 128px;
-  border-radius: 15px;
+  width: 10rem; /* 160px */
+  height: 8rem; /* 128px */
+  border-radius: 0.938rem; /* 15px */
   background-color: #ededed;
   cursor: pointer;
   text-align: center;
+  flex-shrink: 0;
 }
 
 .category_item img {
-  max-width: 80px;
-  max-height: 80px;
+  max-width: 5rem; /* 80px */
+  max-height: 5rem;
   object-fit: contain;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem;
 }
 
+/* Product list */
 .product_list_content_block {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px 0;
+  padding: 1.25rem 0;
+  width: 100%;
+  max-width: 75rem; /* 1200px */
+  margin: 0 auto;
 }
 
 .product_filter {
   display: flex;
   align-items: center;
-  margin: 5px 0 15px 0;
-  gap: 20px;
+  margin: 0.3125rem 0 0.9375rem 0;
+  gap: 1.25rem;
 }
 
 .filter_link {
@@ -496,13 +525,13 @@ const nextCategory = () => {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
+  gap: 1.25rem;
 }
 
 .product_list_content {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 1.25rem;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -510,65 +539,63 @@ const nextCategory = () => {
 }
 
 .product_item {
+
   background-color: #f6f6f6;
-  border-radius: 9px;
-  padding: 10px;
-  width: 260px;
+  border-radius: 0.563rem; /* 9px */
+  padding: 0.625rem;
+  width: 16.25rem; /* 260px */
   text-align: center;
   position: relative;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .product_img {
   width: 100%;
   height: auto;
-  border-radius: 6px;
+  border-radius: 0.375rem;
 }
 
 .product_item > div {
   position: relative;
+  width: 100%;
 }
 
 .product_item button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
+  right: 0.625rem;
   border: none;
-  font-size: 20px;
+  font-size: 1.25rem;
   cursor: pointer;
 }
 
 .buy_now_btn {
-  width: 186px;
-  height: 48px;
-  border: none;
-  border-radius: 8px;
-  background-color: #000000;
-  color: #ffffff;
-  margin: 10px auto 0 auto;
-  cursor: pointer;
+  /* composes: btn btn-buy; */
+  margin: 0.625rem auto 0 auto;
 }
 
+/* Discount Section */
 .discount_section {
-  padding: 20px 0;
+  margin:  1.25rem ;
+  padding: 1.25rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .discount_products {
-  list-style: none;
+  /* composes: list-reset flex-gap; */
   display: flex;
-  gap: 20px;
-  padding: 0;
-  margin: 0;
   flex-wrap: wrap;
-  justify-content: center;
 }
 
 .discount_product_item {
   background-color: #f6f6f6;
-  border-radius: 9px;
-  padding: 10px;
-  width: 220px;
+  border-radius: 0.563rem;
+  padding: 0.625rem;
+  width: 13.75rem; /* 220px */
   text-align: center;
   position: relative;
 }
@@ -576,41 +603,22 @@ const nextCategory = () => {
 .discount_product_item img {
   width: 100%;
   height: auto;
-  border-radius: 6px;
+  border-radius: 0.375rem;
 }
 
 .discount_product_item button {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 0.625rem;
+  right: 0.625rem;
   background: transparent;
   border: none;
-  font-size: 20px;
+  font-size: 1.25rem;
   cursor: pointer;
 }
 
-.pagination {
-  display: flex;
-  justify-content: center;
-  gap: 5px;
-  margin-top: 20px;
-}
+/* Pagination */
+/* .pagination {
+  composes: pagination;
+} */
 
-.pagination button {
-  border: none;
-  background: #eee;
-  padding: 6px 12px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.pagination button.active {
-  background: #000;
-  color: #fff;
-}
-
-.pagination button:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
 </style>

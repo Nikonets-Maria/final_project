@@ -83,6 +83,49 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped>
-/* Добавьте стили для вашей страницы корзины */
+<style scoped> 
+/* ShoppingCartView.vue (scoped styles) */
+
+.shopping_cart {
+  padding: 1.25rem;
+}
+
+/* .cart_items {
+  composes: list-reets;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem; 
+} */
+
+.cart_item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.625rem;
+  background-color: #f6f6f6;
+  border-radius: 0.563rem; /* 9px */
+}
+
+.cart_item img {
+  max-width: 5rem; /* 80px */
+  height: auto;
+  border-radius: 0.375rem;
+}
+
+.cart_item_info {
+  flex-grow: 1;
+  margin-left: 0.625rem; /* 10px */
+}
+
+.remove_btn {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.total_price {
+  margin-top: 1.25rem;
+  font-size: 1.5rem; /* 24px */
+}
+
 </style>

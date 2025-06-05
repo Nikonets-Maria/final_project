@@ -1,0 +1,114 @@
+/* common.css */
+
+/* Кнопки */
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  background-color: #000;
+  color: #fff;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  user-select: none;
+}
+
+.btn:hover {
+  background-color: #222;
+}
+
+.btn-green {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-green:hover {
+  background-color: #218838;
+  border-color: #218838;
+}
+
+/* Кнопка "купить" с фиксированной шириной (можно переопределять) */
+.btn-buy {
+  width: 11.625rem; /* 186px */
+  height: 3rem; /* 48px */
+}
+
+/* Изображения товаров */
+.product_img {
+  border-radius: 0.375rem; /* 6px */
+  object-fit: contain;
+}
+
+/* Списки без маркеров и отступов */
+.list-reset {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Текст серого цвета */
+.text-gray {
+  color: #909090;
+  font-size: 1.125rem; /* 18px */
+}
+
+/* Flex контейнер с gap */
+.flex-gap {
+  display: flex;
+  gap: 1.25rem; /* 20px */
+}
+
+/* Центрирование текста */
+.text-center {
+  text-align: center;
+}
+
+/* Кнопка избранного */
+.fav-button {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  position: absolute;
+  top: 0.625rem;
+  right: 0.625rem;
+}
+
+/* Пагинация */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.3125rem; /* 5px */
+  margin-top: 1.25rem;
+}
+
+.pagination button {
+  border: none;
+  background: #eee;
+  padding: 0.375rem 0.75rem;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.pagination button.active {
+  background: #000;
+  color: #fff;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Общие стили для секций */
+.section {
+  padding: 1.25rem 0;
+}
+
+.section-title {
+  font-size: 2rem; /* 32px */
+  margin-bottom: 1rem;
+  text-align: center;
+}

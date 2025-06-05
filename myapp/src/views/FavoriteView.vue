@@ -16,15 +16,12 @@ onMounted(async () => {
   }
 })
 
-// Список избранных продуктов
 const favoriteProducts = computed(() =>
   productsStore.products.filter(product => favStore.favorite.includes(product.id))
 )
 
-// Проверка, в избранном ли продукт
 const isFavorite = (productId) => favStore.favorite.includes(productId)
 
-// Переключение избранного
 const toggleFavorite = (productId) => {
   if (isFavorite(productId)) {
     favStore.deleteFromFav(productId)
@@ -33,11 +30,7 @@ const toggleFavorite = (productId) => {
   }
 }
 
-// Обработчик для кнопки "Купить сейчас"
 const buyNow = (productId) => {
-  // Здесь можно реализовать логику для покупки
-  console.log(`Buying product with ID: ${productId}`)
-  // Например, перенаправление на страницу оформления заказа
   router.push(`/checkout/${productId}`)
 }
 </script>
@@ -67,35 +60,39 @@ const buyNow = (productId) => {
 </template>
 
 <style scoped>
-.products_list {
-  list-style: none;
-  padding: 0;
+/* FavoriteView.vue (scoped styles) */
+
+.favorite_products {
+  /* composes: list-reset; */
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem; /* 20px */
 }
 
 .product_item {
-  margin-bottom: 1em;
-  border: 1px solid #ccc;
-  padding: 10px;
+  background-color: #f6f6f6;
+  border-radius: 0.563rem; /* 9px */
+  padding: 0.625rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  position: relative;
 }
 
 .product_img {
-  max-width: 150px;
-  display: block;
+  max-width: 9.375rem; /* 150px */
+  height: auto;
+  border-radius: 0.375rem;
 }
 
-.buy_now_btn {
-  margin-top: 10px;
-  background-color: #28a745; /* Зелёный цвет для кнопки "Купить" */
-  color: white;
+.remove_btn {
+  position: absolute;
+  top: 0.625rem;
+  right: 0.625rem;
+  background: transparent;
   border: none;
-  padding: 10px 15px;
+  font-size: 1.25rem;
   cursor: pointer;
 }
 
-.buy_now_btn:hover {
-  background-color: #218838; /* Темнее при наведении */
-}
 </style>

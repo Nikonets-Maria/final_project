@@ -21,9 +21,9 @@ import Footer from './components/Footer.vue'
   <Footer></Footer>
 </template>
 
-<style scoped> 
+<style scoped>
 .link {
-  margin: 5px;
+  margin: 1em; 
   text-transform: capitalize;
 }
 .main_content {

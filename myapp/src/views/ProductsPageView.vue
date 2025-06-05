@@ -7,7 +7,7 @@
         <button @click="toggleFilterOptions(filter.id)">{{ showFilters[filter.id] ? '˄' : '˅' }}</button>
         <hr>
         <div v-if="showFilters[filter.id]" class="filter_options">
-          <input type="text" placeholder="Search" v-model="searchQuery[filter.id]" />
+          <input type="text" placeholder="Search" v-model="searchQuery[filter.label]" />
           <ul>
             <li v-for="option in filter.options" :key="option.id">
               <label>
@@ -34,6 +34,14 @@
           <label>
             <input type="radio" value="desc" v-model="sortOrder" />
             Price Desc
+          </label>
+          <label>
+            <input type="radio" value="rating" v-model="sortOrder" />
+            Rating
+          </label>
+          <label>
+            <input type="radio" value="deliveryDate" v-model="sortOrder" />
+            Delivery Date
           </label>
         </div>
       </div>
@@ -98,26 +106,33 @@ const cartStore = useCartProductsStore()
 
 // Данные для фильтров
 const filterOptions = ref([
-  { id: 1, label: 'Brand', options: [{ id: 1, label: 'Brand A', value: 'brandA' }, { id: 2, label: 'Brand B', value: 'brandB' }] },
-  { id: 2, label: 'Battery capacity', options: [{ id: 1, label: '2000mAh', value: '2000' }, { id: 2, label: '3000mAh', value: '3000' }] },
-]);
+  { id: 1, label: 'Brand', options: [{ id: 1, label: 'Apple', value: 'Apple' }, { id: 2, label: 'Samsung', value: 'Samsung' }] },
+  { id: 2, label: 'Battery capacity', options: [{ id: 1, label: '2000', value: '2000' }, { id: 2, label: '3000', value: '3000' }] },
+  { id: 3, label: 'Screen Type', options: [{ id: 1, label: 'LCD', value: 'LCD' }, { id: 2, label: 'OLED', value: 'OLED' }] },
+  { id: 4, label: 'Screen Diagonal', options: [{ id: 1, label: '4.7', value: '4.7' }, { id: 2, label: '6.0', value: '6.0' }] },
+  { id: 5, label: 'Protection Class', options: [{ id: 1, label: 'стекло/алюминий', value: 'стекло/алюминий' }, { id: 2, label: 'пластик', value: 'пластик' }] },
+  { id: 6, label: 'Built-in Memory', options: [{ id: 1, label: '64', value: '64' }, { id: 2, label: '128', value: '128' }] },
+])
 
 const selectedFilters = ref({
   Brand: [],
   'Battery capacity': [],
-});
-const searchQuery = ref({});
+  'Screen Type': [],
+  'Screen Diagonal': [],
+  'Protection Class': [],
+  'Built-in Memory': [],
+})
+
+const searchQuery = ref({})
+
 const sortOrder = ref('asc')
-const showFilters = ref({});
+
+const showFilters = ref({})
 
 // Инициализация видимости фильтров
 filterOptions.value.forEach(filter => {
-  showFilters.value[filter.label] = false;
-});
-
-// Пагинация
-const currentPage = ref(1)
-const itemsPerPage = 15
+  showFilters.value[filter.id] = false
+})
 
 const toggleFilterOptions = (filterId) => {
   showFilters.value[filterId] = !showFilters.value[filterId]
@@ -127,32 +142,86 @@ const toggleFilterOptions = (filterId) => {
 const filteredProducts = computed(() => {
   let filtered = productsStore.products
 
-  // Фильтр по выбранным категориям
-  Object.keys(selectedFilters.value).forEach(filterKey => {
-    if (selectedFilters.value[filterKey].length) {
-      filtered = filtered.filter(product => selectedFilters.value[filterKey].includes(product[filterKey]));
-    }
-  });
+  // Функция для получения характеристики по названию
+  const getCharValue = (product, charName) => {
+    const char = product.characteristics.find(c => c.characteristic === charName)
+    return char ? char.value : null
+  }
 
-  // Поиск по названию
-  Object.keys(searchQuery.value).forEach(filterKey => {
-    if (searchQuery.value[filterKey]) {
-      filtered = filtered.filter(product => product.name.toLowerCase().includes(searchQuery.value[filterKey].toLowerCase()));
+  // Применяем фильтры
+  filtered = filtered.filter(product => {
+    // Проверка по Brand
+    if (selectedFilters.value.Brand.length > 0 && !selectedFilters.value.Brand.includes(product.brand)) {
+      return false
     }
-  });
+    // Battery capacity (Аккумулятор)
+    if (
+      selectedFilters.value['Battery capacity'].length > 0 &&
+      !selectedFilters.value['Battery capacity'].includes(getCharValue(product, 'Аккумулятор'))
+    ) {
+      return false
+    }
+    // Screen Type (Разрешение)
+    if (
+      selectedFilters.value['Screen Type'].length > 0 &&
+      !selectedFilters.value['Screen Type'].includes(getCharValue(product, 'Разрешение'))
+    ) {
+      return false
+    }
+    // Screen Diagonal (Диагональ)
+    if (
+      selectedFilters.value['Screen Diagonal'].length > 0 &&
+      !selectedFilters.value['Screen Diagonal'].includes(getCharValue(product, 'Диагональ'))
+    ) {
+      return false
+    }
+    // Protection Class (Материал корпуса)
+    if (
+      selectedFilters.value['Protection Class'].length > 0 &&
+      !selectedFilters.value['Protection Class'].includes(getCharValue(product, 'Материал корпуса'))
+    ) {
+      return false
+    }
+    // Built-in Memory (Объем встроенной памяти)
+    if (
+      selectedFilters.value['Built-in Memory'].length > 0 &&
+      !selectedFilters.value['Built-in Memory'].includes(getCharValue(product, 'Объем встроенной памяти'))
+    ) {
+      return false
+    }
 
-  // Сортировка по цене
-  filtered = filtered.slice().sort((a, b) => {
-    return sortOrder.value === 'asc' ? a.price - b.price : b.price - a.price;
-  });
+    // Поиск по названию (если есть)
+    for (const filterLabel in searchQuery.value) {
+      if (
+        searchQuery.value[filterLabel] &&
+        !product.name.toLowerCase().includes(searchQuery.value[filterLabel].toLowerCase())
+      ) {
+        return false
+      }
+    }
+
+    return true
+  })
+
+  // Сортировка
+  if (sortOrder.value === 'asc') {
+    filtered = filtered.slice().sort((a, b) => a.price - b.price)
+  } else if (sortOrder.value === 'desc') {
+    filtered = filtered.slice().sort((a, b) => b.price - a.price)
+  } else if (sortOrder.value === 'rating') {
+    filtered = filtered.slice().sort((a, b) => b.rating - a.rating)
+  } else if (sortOrder.value === 'deliveryDate') {
+    filtered = filtered.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+  }
 
   return filtered
-});
+})
 
 // Пагинация
-const totalPages = computed(() =>
-  Math.ceil(filteredProducts.value.length / itemsPerPage)
-)
+const currentPage = ref(1)
+const itemsPerPage = 15
+
+const totalPages = computed(() => Math.ceil(filteredProducts.value.length / itemsPerPage))
 
 const paginatedProducts = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage
@@ -162,31 +231,26 @@ const paginatedProducts = computed(() => {
 const prevPage = () => {
   if (currentPage.value > 1) currentPage.value--
 }
-
 const nextPage = () => {
   if (currentPage.value < totalPages.value) currentPage.value++
 }
-
 const goToPage = (page) => {
   currentPage.value = page
 }
 
-// Показываем максимум 5 страниц в пагинации с текущей в центре
+// Пагинация видимых страниц (максимум 5)
 const visiblePages = computed(() => {
   const total = totalPages.value
   let start = Math.max(currentPage.value - 2, 1)
   let end = Math.min(start + 4, total)
-
   if (end - start < 4) {
     start = Math.max(end - 4, 1)
   }
-
   return Array.from({ length: end - start + 1 }, (_, i) => start + i)
 })
 
 // Избранное
 const isFavorite = (id) => favStore.favorite.includes(id)
-
 const toggleFavorite = (id) => {
   if (isFavorite(id)) {
     favStore.deleteFromFav(id)
@@ -195,11 +259,12 @@ const toggleFavorite = (id) => {
   }
 }
 
+// Получить продукт по ID
 const getProductById = (id) => {
   productsStore.getProductById(id)
 }
 
-// Метод добавления товара в корзину
+// Добавить в корзину
 const addToCart = (product) => {
   cartStore.addToCart(product)
 }
@@ -213,112 +278,43 @@ onMounted(() => {
 
 
 <style scoped>
-.products_page_content {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+/* ProductsPageView.vue (scoped styles) */
+
+.products_page {
+  padding: 1.25rem;
 }
 
-.filtr_menu {
-  margin-bottom: 20px;
-}
-
-.filter_options input[type='text'] {
-  width: 100%;
-  padding: 6px;
-  margin-bottom: 10px;
-}
-
-.filter_options ul {
-  list-style: none;
-  padding: 0;
-}
-
-.filter_options li {
-  margin-bottom: 5px;
-}
-
-.products_header {
+.product_filter {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 1.25rem;
 }
 
-.product_list_content {
+.product_list {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  padding: 0;
-  margin: 0;
-  list-style: none;
   justify-content: center;
+  gap: 1.25rem; /* 20px */
 }
 
 .product_item {
-  display: flex;
-  flex-direction: column;
-  background: #f6f6f6;
-  border-radius: 9px;
-  width: 260px;
-  padding: 10px;
-  cursor: pointer;
-  position: relative;
+  background-color: #f6f6f6;
+  border-radius: 0.563rem; /* 9px */
+  padding: 0.625rem;
+  width: 16.25rem; /* 260px */
   text-align: center;
-}
-
-.product_item div {
   position: relative;
 }
 
 .product_img {
-  width: 100%;
-  border-radius: 6px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.375rem;
 }
 
-.fav_button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-}
+/* .buy_now_btn {
+  composes: btn btn-buy;
+  margin-top: 0.625rem;
+} */
 
-.buy_now_btn {
-  width: 186px;
-  height: 48px;
-  border: none;
-  border-radius: 8px;
-  background-color: #000000;
-  color: #ffffff;
-  margin: 10px auto 0 auto;
-  cursor: pointer;
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  gap: 5px;
-  margin-top: 20px;
-}
-
-.pagination button {
-  border: none;
-  background: #eee;
-  padding: 6px 12px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.pagination button.active {
-  background: #000;
-  color: #fff;
-}
-
-.pagination button:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
 </style>

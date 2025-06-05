@@ -114,182 +114,39 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.product_page {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
-}
+/* ProductDetailsPage.vue (scoped styles) */
 
-.product_main {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 30px;
-}
-
-.product_images {
-  flex: 1;
+.product_details {
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  align-items: center;
 }
 
 .product_img {
-  width: 100%;
-  max-width: 300px;
-  border-radius: 8px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.375rem;
 }
 
 .product_info {
-  flex: 2;
-}
-
-.discounted_price {
-  color: red;
-  margin-right: 10px;
-}
-
-.line-through {
-  text-decoration: line-through;
-  color: gray;
-}
-
-.product_actions button {
-  margin-right: 10px;
-  padding: 8px 15px;
-  cursor: pointer;
-}
-
-.product_details {
-  margin-bottom: 30px;
-}
-
-.characteristic {
-  margin-bottom: 8px;
-}
-
-.related_products ol {
-  display: flex;
-  gap: 15px;
-  padding: 0;
-  list-style: none;
-}
-
-.related_item {
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 8px;
-  width: 160px;
+  margin-top: 1.25rem;
   text-align: center;
 }
 
-.related_item img {
-  max-width: 100%;
-  border-radius: 6px;
-  margin-bottom: 5px;
+.product_title {
+  font-size: 2rem; /* 32px */
+  margin-bottom: 0.625rem; /* 10px */
 }
 
-.related_item button {
-  margin-top: 5px;
-  cursor: pointer;
-  background: none;
-  border: none;
-  font-size: 18px;
+.product_price {
+  font-size: 1.5rem; /* 24px */
+  color: #28a745; /* green */
 }
+
+/* .buy_now_btn {
+  composes: btn btn-green;
+  margin-top: 1rem;
+} */
+
 </style>
-
-<!-- <template>
-  <div>
-
-    <div>
-      <div>
-        <img/>
-
-      </div>
-      <div>
-        <img :src="`http://localhost:1452/`+ productsStore.product_info.images" class="product_img" />
-        <h1> {{ productsStore.product_info.name }}</h1>
-        <h2> {{ productsStore.product_info.price}}$</h2>
-        <h3></h3>  -->
-        <!-- если скидка есть передаем через слот? -->
-         <!-- <ol>
-          <div>
-            <img/>
-            <p></p>
-            <p></p>
-          </div>
-         </ol>
-         <p></p> -->
-         <!-- ограничение по тексту и слово кнопка показать больше?
-         а нет - если нажать скролит к следущему диву с деталями? 
-         !уточнить на паре
-         -->
-         <!-- <div>
-          <button>Add to Wishlist</button>
-          <button>Add to Card</button>
-         </div>
-         
-         <ol>
-          <img/>
-          <p></p>
-          <p></p>
-         </ol>
-      </div>
-    </div>
-
-    <div>
-      <h3>Details</h3>
-      <p></p>
-      <div>
-        итерация по продукту
-         <h4></h4>
-         <h4>count</h4>
-         <br>
-      </div>
-
-    </div>
-
-    <div>
-      <h1></h1>
-      <p></p>
-      <img />
-    </div>
-
-  <div class="">
-    <h4>Related Products</h4>
-    <ol>
-       <li>
-        <div>
-          <button>fav</button>
-          <img/>
-          <p>text</p>
-          <p>cost</p>
-          <button>Buy Now</button>
-        </div>
-      </li>
-    </ol>
-
-    </div> 
-  </div>
-
-
-</template>
-
-<script setup>
-import { useProductsStore } from '@/stores/products'
-import { onMounted } from 'vue'
-
-  const productsStore = useProductsStore() -->
-
-<!-- 
-  // const getProductById = () => {
-  //   productsStore.getProductById()
-  // }
-
-//   onMounted(() => {
-//   })
-
-// </script> -->
-
-<!-- // <style scoped>
-
-// </style> -->
