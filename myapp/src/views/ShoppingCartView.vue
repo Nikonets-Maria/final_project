@@ -34,7 +34,7 @@ onMounted(() => {
     <h3>Shopping Cart</h3>
     <ol>
       <li v-for="item in cartStore.cart" :key="item.id">
-        <img :src="`http://localhost:1452/${item.image}`" alt="Product Image" />
+        <img                 :src="`http://localhost:1452/${item.images[0]}`" alt="Product Image" />
         <p>{{ item.name }}</p>
         <div>
           <button @click="decrementQuantity(item)">-</button>

@@ -120,8 +120,48 @@
         </button>
         <button :disabled="currentPage === totalPages" @click="nextPage">›</button>
       </div>
-    </div>
 
+    <!-- Popular Products-->
+
+    <div class="popular_baner">
+      <div class="popular_item">
+        <img :src="pop_Watch" alt="Playstation 5" />
+        <img :src="pop_HearPhones" alt="Playstation 5" />
+        <div class="popular_item_content">
+          <h2>Popular Products</h2>
+          <p class="gray_text">iPad combines a magnificent 10.2-inch Retina display, incredible performance, multitasking and ease of use.</p>        
+          <button>Shop Now</button>
+        </div>
+      </div>
+
+      <div class="popular_item">
+        <img :src="pop_Screen" alt="Playstation 5" />
+        <div class="popular_item_content">
+          <h2>Ipad Pro</h2>
+          <p class="gray_text"> iPad combines a magnificent 10.2-inch Retina display, incredible performance, multitasking and ease of use.</p>          
+          <button>Shop Now</button>
+        </div>
+      </div>
+      
+      <div class="popular_item">
+        <img :src="pop_SmartPhone" alt="Playstation 5" />
+        <div class="popular_item_content">
+          <h2>Samsung Galaxy </h2>
+          <p class="gray_text"> iPad combines a magnificent 10.2-inch Retina display, incredible performance, multitasking and ease of use.</p>
+          <button>Shop Now</button>
+        </div>
+      </div>
+      
+      <div class="popular_item">
+        <img :src="pop_Macbook" alt="Playstation 5" />
+        <div class="popular_item_content">
+          <h2>Macbook Pro</h2>
+          <p class="gray_text"> iPad combines a magnificent 10.2-inch Retina display, incredible performance, multitasking and ease of use.</p>          
+          <button>Shop Now</button>
+        </div>
+      </div>
+    </div>
+    </div>
     <!-- Discount Section -->
     <div class="discount_section">
       <h4>Discounts up to -50%</h4>
@@ -186,8 +226,13 @@ import tabletScreenImg from '../assets/images/TabletScreen.png'
 import phoneImg from '../assets/images/Phone.png'
 import laptopImg from '../assets/images/Laptop.png'
 import tabletImg from '../assets/images/Tablet.png'
-import watchImg from '../assets/images/Watch.png'
-import defaultCategoryImg from '../assets/images/TikTok.png' // Заглушка для категории без картинки
+import pop_HearPhones from '../assets/images/Pop_HearPhones.png'
+import pop_Watch from '../assets/images/Pop_Watch.png'
+import pop_Screen from '../assets/images/Pop_Screen.png'
+import pop_Macbook from '../assets/images/Pop_Macbook.png'
+import pop_SmartPhone from '../assets/images/Pop_SmartPhone.png'
+
+import defaultCategoryImg from '../assets/images/TikTok.png'
 
 const productsStore = useProductsStore()
 const favStore = useFavProductsStore()
@@ -203,7 +248,6 @@ onMounted(() => {
   productsStore.getCategories()
 })
 
-// Фильтрация товаров по типу
 const filteredProducts = computed(() => {
   let filtered = []
   switch (activeFilter.value) {
@@ -220,7 +264,6 @@ const filteredProducts = computed(() => {
   return filtered
 })
 
-// Пагинация
 const totalPages = computed(() => Math.ceil(filteredProducts.value.length / itemsPerPage))
 
 const paginatedProducts = computed(() => {
@@ -258,7 +301,7 @@ const visiblePages = computed(() => {
 
 const filterProducts = (filterName) => {
   activeFilter.value = filterName
-  currentPage.value = 1 // Сбросить на первую страницу при смене фильтра
+  currentPage.value = 1 
 }
 
 const isFavorite = (productId) => favStore.favorite.includes(productId)
@@ -275,23 +318,22 @@ const getProductById = (id) => {
   productsStore.getProductById(id)
 }
 
-// Метод добавления товара в корзину
 const addToCart = (product) => {
   cartStore.addToCart(product)
 }
 
-// Заглушки для переключения категорий (реализуйте по необходимости)
 const prevCategory = () => {
-  // TODO: Реализовать переключение категорий
 }
 const nextCategory = () => {
-  // TODO: Реализовать переключение категорий
 }
 </script>
 
 <style scoped>
 
 
+.popular_baner{
+  display: flex;
+}
 
 /* Cover */
 .cover {
@@ -591,30 +633,7 @@ const nextCategory = () => {
   flex-wrap: wrap;
 }
 
-.discount_product_item {
-  background-color: #f6f6f6;
-  border-radius: 0.563rem;
-  padding: 0.625rem;
-  width: 13.75rem; /* 220px */
-  text-align: center;
-  position: relative;
-}
 
-.discount_product_item img {
-  width: 100%;
-  height: auto;
-  border-radius: 0.375rem;
-}
-
-.discount_product_item button {
-  position: absolute;
-  top: 0.625rem;
-  right: 0.625rem;
-  background: transparent;
-  border: none;
-  font-size: 1.25rem;
-  cursor: pointer;
-}
 
 /* Pagination */
 /* .pagination {

@@ -91,6 +91,7 @@ import instaIco from "../assets/images/Instagram.png"
 }
 
 .social_media{
+  display: flex;
   margin-left: 5%;
 }
  .media_img{

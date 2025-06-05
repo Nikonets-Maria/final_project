@@ -96,6 +96,10 @@ export default {
   margin: 15px;
 }
 
+.icons_nav{
+  display: flex;
+}
+
 .fav_logo {
   margin: 10px;
 } 

@@ -1,6 +1,7 @@
 <template>
-  <div class="products_page_content">
-    <!-- Фильтр -->
+  <div class="">
+    <div class="products_page_content">
+      <!-- Фильтр -->
     <div>
       <div class="filtr_menu" v-for="filter in filterOptions" :key="filter.id">
         <h4>{{ filter.label }}</h4>
@@ -26,23 +27,14 @@
         <div>
           <h5>Selected Products: {{ filteredProducts.length }}</h5>
         </div>
-        <div>
-          <label>
-            <input type="radio" value="asc" v-model="sortOrder" />
-            Price Asc
-          </label>
-          <label>
-            <input type="radio" value="desc" v-model="sortOrder" />
-            Price Desc
-          </label>
-          <label>
-            <input type="radio" value="rating" v-model="sortOrder" />
-            Rating
-          </label>
-          <label>
-            <input type="radio" value="deliveryDate" v-model="sortOrder" />
-            Delivery Date
-          </label>
+        <div class="sort_dropdown">
+          <label for="sortOrder">Sort by:</label>
+          <select v-model="sortOrder" id="sortOrder">
+            <option value="asc">Price Asc</option>
+            <option value="desc">Price Desc</option>
+            <option value="rating">Rating</option>
+            <option value="deliveryDate">Delivery Date</option>
+          </select>
         </div>
       </div>
 
@@ -53,19 +45,18 @@
           class="product_item"
           @click="getProductById(product.id)"
         >
-          <div>
-            <img
-              :src="`http://localhost:1452/${product.images[0]}`"
-              :alt="product.name"
-              class="product_img"
-            />
-            <button @click.stop="toggleFavorite(product.id)" aria-label="Toggle favorite" class="fav_button">
-              <span v-if="isFavorite(product.id)">❤️</span>
-              <span v-else>🤍</span>
-            </button>
-          </div>
-
+          <button @click.stop="toggleFavorite(product.id)" aria-label="Toggle favorite" class="fav_button">
+            <span v-if="isFavorite(product.id)">❤️</span>
+            <span v-else>🤍</span>
+          </button>
           <RouterLink :to="`/product/${product.id}`" class="link">
+            <div>
+              <img
+                :src="`http://localhost:1452/${product.images[0]}`"
+                :alt="product.name"
+                class="product_img"
+              />
+            </div>
             <p>{{ product.name }}</p>
             <p>${{ product.price }}</p>
           </RouterLink>
@@ -75,6 +66,9 @@
       </ol>
     </div>
 
+
+    </div>
+    
     <!-- Пагинация -->
     <div class="pagination">
       <button :disabled="currentPage === 1" @click="prevPage">‹</button>
@@ -277,8 +271,18 @@ onMounted(() => {
 </script>
 
 
+
+
 <style scoped>
-/* ProductsPageView.vue (scoped styles) */
+
+.products_page_content{
+  display: flex;
+}
+
+.filtr_menu{
+  width: 20rem;
+}
+
 
 .products_page {
   padding: 1.25rem;
@@ -286,35 +290,138 @@ onMounted(() => {
 
 .product_filter {
   display: flex;
-  justify-content: space-between;
   margin-bottom: 1.25rem;
 }
 
-.product_list {
+.products_list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.25rem; /* 20px */
+  justify-content: end;
+  margin-right: 3rem;
+  gap: 1.25rem; 
+}
+
+.product_list_content {
+  display: flex;
+  justify-content: end;
+  margin-right: 3rem;
+  flex-wrap: wrap;
+  padding-left: 0;
+  list-style: none;
+  gap: 1rem;
 }
 
 .product_item {
+  width: 20%;
   background-color: #f6f6f6;
-  border-radius: 0.563rem; /* 9px */
-  padding: 0.625rem;
-  width: 16.25rem; /* 260px */
+  border-radius: 0.5rem; 
+  padding: 0.5rem;
   text-align: center;
   position: relative;
+  box-sizing: border-box;
 }
 
 .product_img {
   max-width: 100%;
   height: auto;
-  border-radius: 0.375rem;
+  border-radius: 0.3rem;
 }
 
-/* .buy_now_btn {
-  composes: btn btn-buy;
-  margin-top: 0.625rem;
-} */
+.products_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
 
+.sort_dropdown {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sort_dropdown label {
+  font-weight: 600;
+  color: #333;
+}
+
+.sort_dropdown select {
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.3rem;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.sort_dropdown select:hover,
+.sort_dropdown select:focus {
+  border-color: #007BFF;
+  outline: none;
+}
+
+/* Кнопка избранного */
+.fav_button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Кнопка "Add to Cart" */
+.buy_now_btn {
+  margin-top: 0.5rem;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 0.3rem;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.buy_now_btn:hover {
+  background-color: #0056b3;
+}
+
+/* Пагинация */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  gap: 0.5rem;
+}
+
+.pagination button {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 0.3rem;
+  transition: background-color 0.3s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #007BFF;
+  color: white;
+  border-color: #007BFF;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.pagination button.active {
+  background-color: #007BFF;
+  color: white;
+  border-color: #007BFF;
+}
 </style>
+
