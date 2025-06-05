@@ -22,57 +22,47 @@ const favoriteProducts = computed(() =>
 
 const isFavorite = (productId) => favStore.favorite.includes(productId)
 
-const toggleFavorite = (productId) => {
-  if (isFavorite(productId)) {
-    favStore.deleteFromFav(productId)
-  } else {
-    favStore.addToFav(productId)
-  }
-}
-
-const buyNow = (productId) => {
-  router.push(`/checkout/${productId}`)
-}
 </script>
 
 <template>
-  <div>
+  <div class="fav_content">
     <h4>Favorite</h4>
-    <ol class="products_list">
+    <ol class="favorite_products">
       <li v-for="product in favoriteProducts" :key="product.id" class="product_item">
-        <div>
-          <img v-if="product.images.length > 0" :src="`http://localhost:1452/${product.images[0]}`" alt="product image" class="product_img" />
-          <button @click="toggleFavorite(product.id)" aria-label="Toggle favorite">
-            <span v-if="isFavorite(product.id)">❤️</span>
-            <span v-else>🤍</span>
-          </button>
-        </div>
-
+        <hr>
         <RouterLink :to="`/product/${product.id}`" class="link">
+          <div>
+              <img v-if="product.images.length > 0" :src="`http://localhost:1452/${product.images[0]}`" alt="product image" class="product_img" />
+          </div>
           <p>{{ product.name }}</p>
-          <p>${{ product.price }}</p>
         </RouterLink>
-
-        <button class="buy_now_btn" @click="buyNow(product.id)">Buy Now</button>
       </li>
     </ol>
   </div>
 </template>
 
 <style scoped>
-/* FavoriteView.vue (scoped styles) */
-
-.favorite_products {
-  /* composes: list-reset; */
+.fav_content{
   display: flex;
   flex-direction: column;
-  gap: 1.25rem; /* 20px */
+  align-items: center;
+  justify-content: center;
+}
+
+.favorite_products {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .product_item {
   background-color: #f6f6f6;
-  border-radius: 0.563rem; /* 9px */
-  padding: 0.625rem;
+  border-radius: 0.5rem; 
+  padding: 0.6rem;
+  width: 70%;
+  margin: 0.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -80,19 +70,8 @@ const buyNow = (productId) => {
 }
 
 .product_img {
-  max-width: 9.375rem; /* 150px */
-  height: auto;
   border-radius: 0.375rem;
 }
 
-.remove_btn {
-  position: absolute;
-  top: 0.625rem;
-  right: 0.625rem;
-  background: transparent;
-  border: none;
-  font-size: 1.25rem;
-  cursor: pointer;
-}
 
 </style>
