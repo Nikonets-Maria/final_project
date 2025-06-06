@@ -102,11 +102,11 @@ const cartStore = useCartProductsStore()
 const filterOptions = ref([
   { id: 1, label: 'Brand', options: [{ id: 1, label: 'Apple', value: 'Apple' }, { id: 2, label: 'Samsung', value: 'Samsung' }] },
   { id: 2, label: 'Battery capacity', options: [{ id: 1, label: '2000', value: '2000' }, { id: 2, label: '3000', value: '3000' }] },
-  { id: 3, label: 'Screen Type', options: [{ id: 1, label: 'LCD', value: 'LCD' }, { id: 2, label: 'OLED', value: 'OLED' }] },
+  { id: 3, label: 'Screen Type', options: [{ id: 1,  label: 'LCD', value: 'LCD' }, { id: 2, label: 'OLED', value: 'OLED' }] },
   { id: 4, label: 'Screen Diagonal', options: [{ id: 1, label: '4.7', value: '4.7' }, { id: 2, label: '6.0', value: '6.0' }] },
   { id: 5, label: 'Protection Class', options: [{ id: 1, label: 'стекло/алюминий', value: 'стекло/алюминий' }, { id: 2, label: 'пластик', value: 'пластик' }] },
   { id: 6, label: 'Built-in Memory', options: [{ id: 1, label: '64', value: '64' }, { id: 2, label: '128', value: '128' }] },
-])
+]);
 
 const selectedFilters = ref({
   Brand: [],
@@ -123,7 +123,6 @@ const sortOrder = ref('asc')
 
 const showFilters = ref({})
 
-// Инициализация видимости фильтров
 filterOptions.value.forEach(filter => {
   showFilters.value[filter.id] = false
 })
@@ -132,51 +131,42 @@ const toggleFilterOptions = (filterId) => {
   showFilters.value[filterId] = !showFilters.value[filterId]
 }
 
-// Фильтрация и сортировка
 const filteredProducts = computed(() => {
   let filtered = productsStore.products
 
-  // Функция для получения характеристики по названию
   const getCharValue = (product, charName) => {
     const char = product.characteristics.find(c => c.characteristic === charName)
     return char ? char.value : null
   }
 
-  // Применяем фильтры
   filtered = filtered.filter(product => {
-    // Проверка по Brand
     if (selectedFilters.value.Brand.length > 0 && !selectedFilters.value.Brand.includes(product.brand)) {
       return false
     }
-    // Battery capacity (Аккумулятор)
     if (
       selectedFilters.value['Battery capacity'].length > 0 &&
       !selectedFilters.value['Battery capacity'].includes(getCharValue(product, 'Аккумулятор'))
     ) {
       return false
     }
-    // Screen Type (Разрешение)
     if (
       selectedFilters.value['Screen Type'].length > 0 &&
       !selectedFilters.value['Screen Type'].includes(getCharValue(product, 'Разрешение'))
     ) {
       return false
     }
-    // Screen Diagonal (Диагональ)
     if (
       selectedFilters.value['Screen Diagonal'].length > 0 &&
       !selectedFilters.value['Screen Diagonal'].includes(getCharValue(product, 'Диагональ'))
     ) {
       return false
     }
-    // Protection Class (Материал корпуса)
     if (
       selectedFilters.value['Protection Class'].length > 0 &&
       !selectedFilters.value['Protection Class'].includes(getCharValue(product, 'Материал корпуса'))
     ) {
       return false
     }
-    // Built-in Memory (Объем встроенной памяти)
     if (
       selectedFilters.value['Built-in Memory'].length > 0 &&
       !selectedFilters.value['Built-in Memory'].includes(getCharValue(product, 'Объем встроенной памяти'))
@@ -184,7 +174,6 @@ const filteredProducts = computed(() => {
       return false
     }
 
-    // Поиск по названию (если есть)
     for (const filterLabel in searchQuery.value) {
       if (
         searchQuery.value[filterLabel] &&
@@ -197,7 +186,6 @@ const filteredProducts = computed(() => {
     return true
   })
 
-  // Сортировка
   if (sortOrder.value === 'asc') {
     filtered = filtered.slice().sort((a, b) => a.price - b.price)
   } else if (sortOrder.value === 'desc') {
@@ -211,7 +199,6 @@ const filteredProducts = computed(() => {
   return filtered
 })
 
-// Пагинация
 const currentPage = ref(1)
 const itemsPerPage = 15
 
@@ -232,7 +219,6 @@ const goToPage = (page) => {
   currentPage.value = page
 }
 
-// Пагинация видимых страниц (максимум 5)
 const visiblePages = computed(() => {
   const total = totalPages.value
   let start = Math.max(currentPage.value - 2, 1)
@@ -243,7 +229,6 @@ const visiblePages = computed(() => {
   return Array.from({ length: end - start + 1 }, (_, i) => start + i)
 })
 
-// Избранное
 const isFavorite = (id) => favStore.favorite.includes(id)
 const toggleFavorite = (id) => {
   if (isFavorite(id)) {
@@ -253,12 +238,10 @@ const toggleFavorite = (id) => {
   }
 }
 
-// Получить продукт по ID
 const getProductById = (id) => {
   productsStore.getProductById(id)
 }
 
-// Добавить в корзину
 const addToCart = (product) => {
   cartStore.addToCart(product)
 }

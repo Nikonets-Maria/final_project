@@ -3,9 +3,7 @@
   <div class="product_page">
 
     <div class="product_main">
-      <div class="product_images">
         <img :src="`http://localhost:1452/`+ productsStore.product_info.images" class="product_img" />
-      </div>
 
       <div class="product_info">
         <h1>{{ productsStore.product_info.name }}</h1>
@@ -67,7 +65,6 @@ import { useFavProductsStore } from '@/stores/favorite'
 const productsStore = useProductsStore()
 const favStore = useFavProductsStore()
 
-// Пример связанных продуктов (в реальном приложении получать из стора или API)
 const relatedProducts = ref([
   {
     id: 2,
@@ -84,12 +81,10 @@ const relatedProducts = ref([
 ])
 
 const addToWishlist = () => {
-  // Логика добавления в избранное
   alert(`Added "${productsStore.product_info.name}" to wishlist`)
 }
 
 const addToCart = () => {
-  // Логика добавления в корзину
   alert(`Added "${productsStore.product_info.name}" to cart`)
 }
 
@@ -108,13 +103,11 @@ const buyNow = (id) => {
 }
 
 onMounted(() => {
-  productsStore.getProductById(/* передай id продукта */)
-  // Загрузка других данных если нужно
+  productsStore.getProductById()
 })
 </script>
 
 <style scoped>
-/* ProductDetailsPage.vue (scoped styles) */
 
 .product_details {
   padding: 1.25rem;
@@ -129,24 +122,24 @@ onMounted(() => {
   border-radius: 0.375rem;
 }
 
-.product_info {
+.product_main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin-top: 1.25rem;
-  text-align: center;
 }
 
 .product_title {
-  font-size: 2rem; /* 32px */
-  margin-bottom: 0.625rem; /* 10px */
+  font-size: 2rem; 
+  margin-bottom: 0.625rem; 
 }
 
 .product_price {
-  font-size: 1.5rem; /* 24px */
-  color: #28a745; /* green */
+  font-size: 1.5rem;
+  color: #28a745;
 }
 
-/* .buy_now_btn {
-  composes: btn btn-green;
-  margin-top: 1rem;
-} */
+
 
 </style>

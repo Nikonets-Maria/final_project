@@ -1,15 +1,13 @@
 <script setup>
 import { onMounted } from 'vue'
-import { useCartProductsStore } from '@/stores/cart' // Импортируйте ваш store для корзины
+import { useCartProductsStore } from '@/stores/cart' 
 
 const cartStore = useCartProductsStore()
 
-// Увеличить количество товара
 const incrementQuantity = (item) => {
   item.quantity += 1
 }
 
-// Уменьшить количество товара
 const decrementQuantity = (item) => {
   if (item.quantity > 1) {
     item.quantity -= 1
@@ -18,14 +16,11 @@ const decrementQuantity = (item) => {
   }
 }
 
-// Удалить товар из корзины
 const removeFromCart = (item) => {
   cartStore.delleteFromCart(item.id)
 }
 
-// Запрос содержимого корзины при монтировании
 onMounted(() => {
-  // Здесь можно добавить код для запроса данных, если это необходимо
 })
 </script>
 
@@ -84,36 +79,30 @@ onMounted(() => {
 </template>
 
 <style scoped> 
-/* ShoppingCartView.vue (scoped styles) */
+
 
 .shopping_cart {
   padding: 1.25rem;
 }
 
-/* .cart_items {
-  composes: list-reets;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem; 
-} */
 
 .cart_item {
   display: flex;
   justify-content: space-between;
   padding: 0.625rem;
   background-color: #f6f6f6;
-  border-radius: 0.563rem; /* 9px */
+  border-radius: 0.563rem;
 }
 
 .cart_item img {
-  max-width: 5rem; /* 80px */
+  max-width: 5rem; 
   height: auto;
   border-radius: 0.375rem;
 }
 
 .cart_item_info {
   flex-grow: 1;
-  margin-left: 0.625rem; /* 10px */
+  margin-left: 0.625rem; 
 }
 
 .remove_btn {
@@ -125,7 +114,7 @@ onMounted(() => {
 
 .total_price {
   margin-top: 1.25rem;
-  font-size: 1.5rem; /* 24px */
+  font-size: 1.5rem; 
 }
 
 </style>
